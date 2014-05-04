@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/go-xorm/xorm"
 	"strings"
+
+	"github.com/go-xorm/xorm"
 )
 
 var CmdShell = &Command{
@@ -50,6 +51,9 @@ func runShell(cmd *Command, args []string) {
 		return
 	}
 
+	engine.ShowSQL, engine.ShowDebug = false, false
+	engine.ShowErr, engine.ShowWarn = false, false
+
 	err = engine.Ping()
 	if err != nil {
 		fmt.Println(err)
@@ -75,6 +79,7 @@ func runShell(cmd *Command, args []string) {
 		}
 		scmd = scmd + " " + input
 		lcmd := strings.TrimSpace(strings.ToLower(scmd))
+		lcmd = strings.TrimRight(lcmd, ";")
 		if strings.HasPrefix(lcmd, "select") {
 			res, err := engine.Query(scmd + "\n")
 			if err != nil {
@@ -127,18 +132,37 @@ func runShell(cmd *Command, args []string) {
 				}
 			}
 		} else if lcmd == "show tables;" {
-			/*tables, err := engine.DBMetas()
-			  if err != nil {
-			      fmt.Println(err)
-			  } else {
-
-			  }*/
-		} else {
-			cnt, err := engine.Exec(scmd)
+			tables, err := engine.Dialect().GetTables()
 			if err != nil {
 				fmt.Println(err)
 			} else {
-				fmt.Printf("%d records changed.\n", cnt)
+				for _, table := range tables {
+					fmt.Println(table.Name)
+				}
+			}
+		} else if strings.HasPrefix(lcmd, "dump") {
+			fields := strings.Fields(lcmd)
+			if len(fields) == 2 {
+				err = engine.DumpAllToFile(fields[1])
+				if err != nil {
+					fmt.Println(err)
+				} else {
+					fmt.Println("dump successfully!")
+				}
+			} else {
+				fmt.Println("param error")
+			}
+		} else {
+			res, err := engine.Exec(scmd)
+			if err != nil {
+				fmt.Println(err)
+			} else {
+				cnt, err := res.RowsAffected()
+				if err != nil {
+					fmt.Println(err)
+				} else {
+					fmt.Printf("%d records changed.\n", cnt)
+				}
 			}
 		}
 		scmd = ""
