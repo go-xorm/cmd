@@ -243,6 +243,16 @@ func tag(table *core.Table, col *core.Column) string {
 		} else {
 			nstr += fmt.Sprintf("(%v)", col.Length)
 		}
+	} else if len(col.EnumOptions)>0 { //enum
+		nstr += "("
+		for v,k := range col.EnumOptions {
+			if k >0 {
+				nstr += fmt.Sprintf(",'%v'", v)
+			} else {
+				nstr += fmt.Sprintf("'%v'", v)
+			}
+		}
+		nstr += ")"
 	}
 	res = append(res, nstr)
 
