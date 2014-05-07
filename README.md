@@ -17,12 +17,19 @@ and you should install the depends below:
 
 * SQLite: [github.com/mattn/go-sqlite3](https://github.com/mattn/go-sqlite3)
 
-* Postgres: [github.com/bylevel/pq](https://github.com/bylevel/pq)
+* Postgres: [github.com/lib/pq](https://github.com/lib/pq)
 
+## Commands
+
+There are three commands now.
+
+* reverse     reverse a db to codes
+* shell       a general shell to operate all kinds of database
+* dump        dump database all table struct's and data to standard output
 
 ## Reverse
 
-After you installed the tool, you can type 
+Reverse command is a tool to convert your database struct to all kinds languages of structs or classes. After you installed the tool, you can type 
 
 `xorm help reverse`
 
@@ -44,7 +51,7 @@ postgres:
 
 will generated go files in `./model` directory
 
-## Template and Config
+### Template and Config
 
 Now, xorm tool supports go and c++ two languages and have go, goxorm, c++ three of default templates. In template directory, we can put a config file to control how to generating.
 
@@ -55,6 +62,20 @@ genJson=1
 
 lang must be go or c++ now.
 genJson can be 1 or 0, if 1 then the struct will have json tag.
+
+## Shell
+
+Shell command provides a tool to operate database. For example, you can create table, alter table, insert data, delete data and etc.
+
+`xorm shell sqlite3 test.db` will connect to the sqlite3 database and you can type `help` to list all the shell commands.
+
+## Dump
+
+Dump command provides a tool to dump all database structs and data as SQL to your standard output.
+
+`xorm dump sqlite3 test.db` could dump sqlite3 database test.db to standard output. If you want to save to file, just
+type `xorm dump sqlite3 test.db > test.sql`.
+
 
 ## LICENSE
 

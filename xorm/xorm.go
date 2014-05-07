@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/dvirsky/go-pylog/logging"
 	"io"
 	"os"
 	"runtime"
@@ -11,6 +10,8 @@ import (
 	"text/template"
 	"unicode"
 	"unicode/utf8"
+
+	"github.com/dvirsky/go-pylog/logging"
 )
 
 // +build go1.1
@@ -25,6 +26,7 @@ const version = "0.1"
 var commands = []*Command{
 	CmdReverse,
 	CmdShell,
+	CmdDump,
 }
 
 func init() {
