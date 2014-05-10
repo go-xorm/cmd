@@ -159,7 +159,7 @@ func gt(arg1, arg2 interface{}) (bool, error) {
 }
 
 func getCol(cols map[string]*core.Column, name string) *core.Column {
-	return cols[name]
+	return cols[strings.ToLower(name)]
 }
 
 func formatGo(src string) (string, error) {
@@ -243,10 +243,10 @@ func tag(table *core.Table, col *core.Column) string {
 		} else {
 			nstr += fmt.Sprintf("(%v)", col.Length)
 		}
-	} else if len(col.EnumOptions)>0 { //enum
+	} else if len(col.EnumOptions) > 0 { //enum
 		nstr += "("
-		for v,k := range col.EnumOptions {
-			if k >0 {
+		for v, k := range col.EnumOptions {
+			if k > 0 {
 				nstr += fmt.Sprintf(",'%v'", v)
 			} else {
 				nstr += fmt.Sprintf("'%v'", v)

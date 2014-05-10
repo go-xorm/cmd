@@ -131,7 +131,7 @@ func runShell(cmd *Command, args []string) {
 					//fmt.Println(res)
 				}
 			}
-		} else if lcmd == "show tables;" {
+		} else if lcmd == "show tables" {
 			tables, err := engine.Dialect().GetTables()
 			if err != nil {
 				fmt.Println(err)
