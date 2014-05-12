@@ -15,9 +15,11 @@ and you should install the depends below:
 
 * MyMysql: [github.com/ziutek/mymysql/godrv](https://github.com/ziutek/mymysql/godrv)
 
-* SQLite: [github.com/mattn/go-sqlite3](https://github.com/mattn/go-sqlite3)
-
 * Postgres: [github.com/lib/pq](https://github.com/lib/pq)
+
+* SQLite: [github.com/mattn/go-sqlite3](https://github.com/mattn/go-sqlite3) 
+
+** For sqlite support, you need build via `go build -tags sqlite3` because of this driver ask cgo.
 
 ## Commands
 

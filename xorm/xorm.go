@@ -21,12 +21,19 @@ const go11tag = true
 
 const version = "0.1"
 
+var supportedDrivers = map[string]string{
+	"mysql":    "github.com/go-sql-driver/mysql",
+	"mymysql":  "github.com/ziutek/mymysql/godrv",
+	"postgres": "github.com/lib/pq",
+}
+
 // Commands lists the available commands and help topics.
 // The order here is the order in which they are printed by 'gopm help'.
 var commands = []*Command{
 	CmdReverse,
 	CmdShell,
 	CmdDump,
+	CmdDriver,
 }
 
 func init() {
