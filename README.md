@@ -3,7 +3,17 @@
 
 xorm tools is a set of  tools for database operation. 
 
-## Install
+## Binary Install
+
+If you have [got](https://github.com/lunny/got) installed, you can install by got
+
+```
+got go-xorm/cmd/xorm
+```
+
+or you can download from [gobuild](http://gobuild.io/download/github.com/lunny/got).
+
+## Source Install
 
 `go get github.com/go-xorm/cmd/xorm`
 
