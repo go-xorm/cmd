@@ -7,11 +7,11 @@ import (
 	"github.com/go-xorm/xorm"
 )
 
-var CmdDump = &Command{
-	UsageLine: "dump driverName datasourceName",
-	Short:     "dump database all table struct's and data to standard output",
+var CmdSource = &Command{
+	UsageLine: "source driverName datasourceName",
+	Short:     "source execute std in to datasourceName",
 	Long: `
-dump database for sqlite3, mysql, postgres.
+source from standard std in for sqlite3, mysql, postgres.
 
     driverName        Database driver name, now supported four: mysql mymysql sqlite3 postgres
     datasourceName    Database connection uri, for detail infomation please visit driver's project page
@@ -19,13 +19,13 @@ dump database for sqlite3, mysql, postgres.
 }
 
 func init() {
-	CmdDump.Run = runDump
-	CmdDump.Flags = map[string]bool{}
+	CmdSource.Run = runSource
+	CmdSource.Flags = map[string]bool{}
 }
 
-func runDump(cmd *Command, args []string) {
+func runSource(cmd *Command, args []string) {
 	if len(args) != 2 {
-		fmt.Println("params error, please see xorm help dump")
+		fmt.Println("params error, please see xorm help source")
 		return
 	}
 
@@ -45,7 +45,10 @@ func runDump(cmd *Command, args []string) {
 		return
 	}
 
-	err = engine.DumpAll(os.Stdout)
+	_, err = engine.Import(os.Stdin)
+	if err.Error() == "not an error" {
+		err = nil
+	}
 	if err != nil {
 		fmt.Println(err)
 		return

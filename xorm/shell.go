@@ -69,14 +69,23 @@ func runShell(cmd *Command, args []string) {
 			fmt.Println(err)
 			continue
 		}
+		if strings.ToLower(input) == "help" {
+			shellHelp()
+			scmd = ""
+			fmt.Print("xorm$ ")
+			continue
+		}
+
 		if strings.ToLower(input) == "exit" {
 			fmt.Println("bye")
 			return
 		}
+
 		if !strings.HasSuffix(input, ";") {
 			scmd = scmd + " " + input
 			continue
 		}
+
 		scmd = scmd + " " + input
 		lcmd := strings.TrimSpace(strings.ToLower(scmd))
 		lcmd = strings.TrimRight(lcmd, ";")
@@ -136,18 +145,129 @@ func runShell(cmd *Command, args []string) {
 			if err != nil {
 				fmt.Println(err)
 			} else {
+				var maxlen int
 				for _, table := range tables {
-					fmt.Println(table.Name)
+					if len(table.Name) > maxlen {
+						maxlen = len(table.Name)
+					}
 				}
+				head := "Table Name"
+				if maxlen < len(head) {
+					maxlen = len(head)
+				}
+
+				maxlen = maxlen + 2
+
+				fmt.Println(strings.Repeat("-", maxlen+3))
+				fmt.Print("| " + head + strings.Repeat(" ", maxlen-len(head)))
+				fmt.Println("|")
+				fmt.Println(strings.Repeat("-", maxlen+3))
+				for _, table := range tables {
+					fmt.Print("|")
+					fmt.Print(" " + table.Name)
+					fmt.Print(strings.Repeat(" ", maxlen-len(table.Name)))
+					fmt.Println("|")
+				}
+				fmt.Println(strings.Repeat("-", maxlen+3))
 			}
 		} else if strings.HasPrefix(lcmd, "dump") {
-			fields := strings.Fields(lcmd)
+			fields := strings.Fields(strings.TrimRight(scmd, ";"))
 			if len(fields) == 2 {
 				err = engine.DumpAllToFile(fields[1])
 				if err != nil {
 					fmt.Println(err)
 				} else {
 					fmt.Println("dump successfully!")
+				}
+			} else {
+				fmt.Println("param error")
+			}
+		} else if strings.HasPrefix(lcmd, "source") {
+			fields := strings.Fields(strings.TrimRight(scmd, ";"))
+			if len(fields) == 2 {
+				_, err = engine.ImportFile(fields[1])
+				if err.Error() == "not an error" {
+					err = nil
+				}
+				if err != nil {
+					fmt.Println(err)
+				}
+			} else {
+				fmt.Println("param error")
+			}
+		} else if strings.HasPrefix(lcmd, "columns") {
+			fields := strings.Fields(strings.TrimRight(scmd, ";"))
+			if len(fields) == 2 {
+				_, columns, err := engine.Dialect().GetColumns(fields[1])
+				if err != nil {
+					fmt.Println(err)
+				} else {
+					if len(columns) == 0 {
+						fmt.Println("no column in", fields[1])
+					} else {
+						var maxlen int
+						for name, _ := range columns {
+							if len(name) > maxlen {
+								maxlen = len(name)
+							}
+						}
+						head := "Column Name"
+						if maxlen < len(head) {
+							maxlen = len(head)
+						}
+
+						maxlen = maxlen + 2
+
+						fmt.Println(strings.Repeat("-", maxlen+3))
+						fmt.Print("| " + head + strings.Repeat(" ", maxlen-len(head)))
+						fmt.Println("|")
+						fmt.Println(strings.Repeat("-", maxlen+3))
+						for name, _ := range columns {
+							fmt.Print("|")
+							fmt.Print(" " + name)
+							fmt.Print(strings.Repeat(" ", maxlen-len(name)))
+							fmt.Println("|")
+						}
+						fmt.Println(strings.Repeat("-", maxlen+3))
+					}
+				}
+			} else {
+				fmt.Println("param error")
+			}
+		} else if strings.HasPrefix(lcmd, "indexes") {
+			fields := strings.Fields(strings.TrimRight(scmd, ";"))
+			if len(fields) == 2 {
+				indexes, err := engine.Dialect().GetIndexes(fields[1])
+				if err != nil {
+					fmt.Println(err)
+				} else {
+					if len(indexes) == 0 {
+						fmt.Println("no index in", fields[1])
+					} else {
+						var maxlen int
+						for name, _ := range indexes {
+							if len(name) > maxlen {
+								maxlen = len(name)
+							}
+						}
+						head := "Index Name"
+						if maxlen < len(head) {
+							maxlen = len(head)
+						}
+
+						maxlen = maxlen + 2
+						fmt.Println(strings.Repeat("-", maxlen+3))
+						fmt.Print("| " + head + strings.Repeat(" ", maxlen-len(head)))
+						fmt.Println("|")
+						fmt.Println(strings.Repeat("-", maxlen+3))
+						for name, _ := range indexes {
+							fmt.Print("|")
+							fmt.Print(" " + name)
+							fmt.Print(strings.Repeat(" ", maxlen-len(name)))
+							fmt.Println("|")
+						}
+						fmt.Println(strings.Repeat("-", maxlen+3))
+					}
 				}
 			} else {
 				fmt.Println("param error")
