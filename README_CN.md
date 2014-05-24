@@ -1,25 +1,25 @@
 
-[中文](https://github.com/go-xorm/cmd/blob/master/README_CN.md)
+[English](https://github.com/go-xorm/cmd/blob/master/README.md)
 
-# xorm tools
+# xorm 工具
 
-xorm tools is a set of  tools for database operation. 
+xorm 是一组数据库操作命令行工具。 
 
-## Binary Install
+## 二进制安装
 
-If you have [got](https://github.com/gobuild/got) installed, you can install by got
+如果你安装了 [got](https://github.com/gobuild/got)，你可以输入如下命令安装：
 
 ```
 got go-xorm/cmd/xorm
 ```
 
-or you can download from [gobuild](http://gobuild.io/download/github.com/lunny/got).
+或者你可以从 [gobuild](http://gobuild.io/download/github.com/lunny/got) 下载后解压到可执行路径。
 
-## Source Install
+## 源码安装
 
 `go get github.com/go-xorm/cmd/xorm`
 
-and you should install the depends below:
+同时你需要安装如下依赖:
 
 * github.com/go-xorm/xorm
 
@@ -31,19 +31,19 @@ and you should install the depends below:
 
 * SQLite: [github.com/mattn/go-sqlite3](https://github.com/mattn/go-sqlite3) 
 
-** For sqlite support, you need build via `go build -tags sqlite3` because of this driver ask cgo.
+** 对于sqlite3的支持，你需要自己进行编译 `go build -tags sqlite3` 因为sqlite3需要cgo的支持。
 
-## Commands
+## 命令列表
 
-All the commands below.
+有如下可用的命令：
 
-* **reverse**     reverse a db to codes
-* **shell**       a general shell to operate all kinds of database
-* **dump**        dump database all table struct's and data to standard output
-* **source**      execute a sql from std in
-* **driver**      list all supported drivers
+* **reverse**     反转一个数据库结构，生成代码
+* **shell**       通用的数据库操作客户端，可对数据库结构和数据操作
+* **dump**        Dump数据库中所有结构和数据到标准输出
+* **source**      从标注输入中执行SQL文件
+* **driver**      列出所有支持的数据库驱动
 
-## Reverse
+## reverse
 
 Reverse command is a tool to convert your database struct to all kinds languages of structs or classes. After you installed the tool, you can type 
 
