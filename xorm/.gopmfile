@@ -1,2 +1,2 @@
 [deps]
-github.com/go-xorm/xorm=../
+github.com/go-xorm/xorm=
