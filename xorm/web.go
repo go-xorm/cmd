@@ -152,8 +152,14 @@ func (c *MainAction) View() error {
 	var records = make([][]*string, 0)
 	var columns = make([]string, 0)
 	tb := c.GetString("tb")
-	if tb != "" {
-		rows, err := o.DB().Query("select * from " + tb)
+	sql := c.GetString("sql")
+	if sql != "" || tb != "" {
+		if sql != "" {
+		} else if tb != "" {
+			sql = "select * from " + tb
+		}
+
+		rows, err := o.DB().Query(sql)
 		if err != nil {
 			return err
 		}

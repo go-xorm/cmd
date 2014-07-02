@@ -26,6 +26,13 @@
 {{end}}
 </div>
 <div class="col-md-9">
+<form class="form-inline" role="form">
+<div class="form-group col-md-7">
+<textarea name="sql" class="form-control" rows="3" placeholder="Enter SQL"></textarea>
+<input type="hidden" name="id" value="{{$id}}"/>
+</div>
+<input class="btn btn-default" type="submit" value="执行"/>
+</form>
 <table class="table table-striped table-bordered">
 <tr>
 {{range .T.columns}}
