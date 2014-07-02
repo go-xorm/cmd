@@ -35,6 +35,7 @@ var commands = []*Command{
 	CmdDump,
 	CmdDriver,
 	CmdSource,
+	CmdWeb,
 }
 
 func init() {
