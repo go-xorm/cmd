@@ -10,8 +10,6 @@ import (
 	"text/template"
 	"unicode"
 	"unicode/utf8"
-
-	"github.com/dvirsky/go-pylog/logging"
 )
 
 // +build go1.1
@@ -43,7 +41,6 @@ func init() {
 }
 
 func main() {
-	logging.SetLevel(logging.ALL)
 	// Check length of arguments.
 	args := os.Args[1:]
 	if len(args) < 1 {

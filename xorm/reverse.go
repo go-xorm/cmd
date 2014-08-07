@@ -11,9 +11,9 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/dvirsky/go-pylog/logging"
 	"github.com/go-xorm/core"
 	"github.com/go-xorm/xorm"
+	"github.com/go-xweb/log"
 
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/lib/pq"
@@ -87,7 +87,7 @@ func runReverse(cmd *Command, args []string) {
 
 	curPath, err := os.Getwd()
 	if err != nil {
-		fmt.Println(curPath)
+		fmt.Println(err)
 		return
 	}
 
@@ -110,12 +110,12 @@ func runReverse(cmd *Command, args []string) {
 
 	dir, err := filepath.Abs(args[2])
 	if err != nil {
-		logging.Error("%v", err)
+		log.Errorf("%v", err)
 		return
 	}
 
 	if !dirExists(dir) {
-		logging.Error("Template %v path is not exist", dir)
+		log.Errorf("Template %v path is not exist", dir)
 		return
 	}
 
@@ -151,13 +151,13 @@ func runReverse(cmd *Command, args []string) {
 
 	Orm, err := xorm.NewEngine(args[0], args[1])
 	if err != nil {
-		logging.Error("%v", err)
+		log.Errorf("%v", err)
 		return
 	}
 
 	tables, err := Orm.DBMetas()
 	if err != nil {
-		logging.Error("%v", err)
+		log.Errorf("%v", err)
 		return
 	}
 
@@ -172,7 +172,7 @@ func runReverse(cmd *Command, args []string) {
 
 		bs, err := ioutil.ReadFile(f)
 		if err != nil {
-			logging.Error("%v", err)
+			log.Errorf("%v", err)
 			return err
 		}
 
@@ -181,7 +181,7 @@ func runReverse(cmd *Command, args []string) {
 
 		tmpl, err := t.Parse(string(bs))
 		if err != nil {
-			logging.Error("%v", err)
+			log.Errorf("%v", err)
 			return err
 		}
 
@@ -193,7 +193,7 @@ func runReverse(cmd *Command, args []string) {
 		if !isMultiFile {
 			w, err = os.OpenFile(path.Join(genDir, newFileName), os.O_RDWR|os.O_CREATE, 0600)
 			if err != nil {
-				logging.Error("%v", err)
+				log.Errorf("%v", err)
 				return err
 			}
 
@@ -213,20 +213,20 @@ func runReverse(cmd *Command, args []string) {
 			t := &Tmpl{Tables: tbls, Imports: imports, Model: model}
 			err = tmpl.Execute(newbytes, t)
 			if err != nil {
-				logging.Error("%v", err)
+				log.Errorf("%v", err)
 				return err
 			}
 
 			tplcontent, err := ioutil.ReadAll(newbytes)
 			if err != nil {
-				logging.Error("%v", err)
+				log.Errorf("%v", err)
 				return err
 			}
 			var source string
 			if langTmpl.Formater != nil {
 				source, err = langTmpl.Formater(string(tplcontent))
 				if err != nil {
-					logging.Error("%v", err)
+					log.Errorf("%v", err)
 					return err
 				}
 			} else {
@@ -247,7 +247,7 @@ func runReverse(cmd *Command, args []string) {
 
 				w, err := os.OpenFile(path.Join(genDir, unTitle(mapper.Table2Obj(table.Name))+ext), os.O_RDWR|os.O_CREATE, 0600)
 				if err != nil {
-					logging.Error("%v", err)
+					log.Errorf("%v", err)
 					return err
 				}
 
@@ -256,20 +256,20 @@ func runReverse(cmd *Command, args []string) {
 				t := &Tmpl{Tables: tbs, Imports: imports, Model: model}
 				err = tmpl.Execute(newbytes, t)
 				if err != nil {
-					logging.Error("%v", err)
+					log.Errorf("%v", err)
 					return err
 				}
 
 				tplcontent, err := ioutil.ReadAll(newbytes)
 				if err != nil {
-					logging.Error("%v", err)
+					log.Errorf("%v", err)
 					return err
 				}
 				var source string
 				if langTmpl.Formater != nil {
 					source, err = langTmpl.Formater(string(tplcontent))
 					if err != nil {
-						logging.Error("%v-%v", err, string(tplcontent))
+						log.Errorf("%v-%v", err, string(tplcontent))
 						return err
 					}
 				} else {
