@@ -191,7 +191,7 @@ func runReverse(cmd *Command, args []string) {
 		ext := path.Ext(newFileName)
 
 		if !isMultiFile {
-			w, err = os.OpenFile(path.Join(genDir, newFileName), os.O_RDWR|os.O_CREATE, 0600)
+			w, err = os.Create(path.Join(genDir, newFileName))
 			if err != nil {
 				log.Errorf("%v", err)
 				return err
@@ -245,7 +245,7 @@ func runReverse(cmd *Command, args []string) {
 				tbs := []*core.Table{table}
 				imports := langTmpl.GenImports(tbs)
 
-				w, err := os.OpenFile(path.Join(genDir, unTitle(mapper.Table2Obj(table.Name))+ext), os.O_RDWR|os.O_CREATE, 0600)
+				w, err := os.Create(path.Join(genDir, unTitle(mapper.Table2Obj(table.Name))+ext))
 				if err != nil {
 					log.Errorf("%v", err)
 					return err
