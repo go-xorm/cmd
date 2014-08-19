@@ -245,23 +245,19 @@ func tag(table *core.Table, col *core.Column) string {
 		}
 	} else if len(col.EnumOptions) > 0 { //enum
 		nstr += "("
-		for v, k := range col.EnumOptions {
-			if k > 0 {
-				nstr += fmt.Sprintf(",'%v'", v)
-			} else {
-				nstr += fmt.Sprintf("'%v'", v)
-			}
+		opts := ""
+		for v, _ := range col.EnumOptions {
+			opts += fmt.Sprintf(",'%v'", v)
 		}
+		nstr += strings.TrimLeft(opts,",")
 		nstr += ")"
 	} else if len(col.SetOptions) > 0 { //enum
 		nstr += "("
-		for v, k := range col.SetOptions {
-			if k > 0 {
-				nstr += fmt.Sprintf(",'%v'", v)
-			} else {
-				nstr += fmt.Sprintf("'%v'", v)
-			}
+		opts := ""
+		for v, _ := range col.SetOptions {
+			opts += fmt.Sprintf(",'%v'", v)
 		}
+		nstr += strings.TrimLeft(opts,",")
 		nstr += ")"
 	}
 	res = append(res, nstr)
