@@ -38,8 +38,7 @@ according database's tables and columns to generate codes for Go, C++ and etc.
 func init() {
 	CmdReverse.Run = runReverse
 	CmdReverse.Flags = map[string]bool{
-		"-s": false,
-		"-l": false,
+		"-m": false,
 	}
 }
 
@@ -81,7 +80,7 @@ func runReverse(cmd *Command, args []string) {
 	}
 
 	var isMultiFile bool = true
-	if use, ok := cmd.Flags["-s"]; ok {
+	if use, ok := cmd.Flags["-m"]; ok {
 		isMultiFile = !use
 	}
 
