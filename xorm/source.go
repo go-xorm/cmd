@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/go-xorm/core"
 	"github.com/go-xorm/xorm"
 )
 
@@ -36,8 +37,8 @@ func runSource(cmd *Command, args []string) {
 		return
 	}
 
-	engine.ShowSQL, engine.ShowDebug = false, false
-	engine.ShowErr, engine.ShowWarn = false, false
+	engine.ShowSQL(false)
+	engine.Logger().SetLevel(core.LOG_UNKNOWN)
 
 	err = engine.Ping()
 	if err != nil {
