@@ -27,6 +27,7 @@ var CmdReverse = &Command{
 according database's tables and columns to generate codes for Go, C++ and etc.
 
     -s                Generated one go file for every table
+    -a                Append mode
     driverName        Database driver name, now supported four: mysql mymysql sqlite3 postgres
     datasourceName    Database connection uri, for detail infomation please visit driver's project page
     tmplPath        Template dir for generated. the default templates dir has provide 1 template
@@ -39,6 +40,7 @@ func init() {
 	CmdReverse.Run = runReverse
 	CmdReverse.Flags = map[string]bool{
 		"-s": false,
+		"-a": false,
 		"-l": false,
 	}
 }
@@ -51,9 +53,10 @@ func printReversePrompt(flag string) {
 }
 
 type Tmpl struct {
-	Tables  []*core.Table
-	Imports map[string]string
-	Model   string
+	Tables   []*core.Table
+	Imports  map[string]string
+	Model    string
+	IsAppend bool
 }
 
 func dirExists(dir string) bool {
@@ -80,9 +83,16 @@ func runReverse(cmd *Command, args []string) {
 		return
 	}
 
-	var isMultiFile bool = true
+	var (
+		isMultiFile = true
+		isAppend    = false
+	)
 	if use, ok := cmd.Flags["-s"]; ok {
 		isMultiFile = !use
+	}
+
+	if use, ok := cmd.Flags["-a"]; ok {
+		isAppend = use
 	}
 
 	curPath, err := os.Getwd()
@@ -191,7 +201,12 @@ func runReverse(cmd *Command, args []string) {
 		ext := path.Ext(newFileName)
 
 		if !isMultiFile {
-			w, err = os.Create(path.Join(genDir, newFileName))
+			println(path.Join(genDir, newFileName))
+			if _, err := os.Stat(path.Join(genDir, newFileName)); !os.IsNotExist(err) && isAppend {
+				w, err = os.OpenFile(path.Join(genDir, newFileName), os.O_APPEND, os.ModeAppend)
+			} else {
+				w, err = os.Create(path.Join(genDir, newFileName))
+			}
 			if err != nil {
 				log.Errorf("%v", err)
 				return err
@@ -210,7 +225,7 @@ func runReverse(cmd *Command, args []string) {
 
 			newbytes := bytes.NewBufferString("")
 
-			t := &Tmpl{Tables: tbls, Imports: imports, Model: model}
+			t := &Tmpl{Tables: tbls, Imports: imports, Model: model, IsAppend: isAppend}
 			err = tmpl.Execute(newbytes, t)
 			if err != nil {
 				log.Errorf("%v", err)
