@@ -1,4 +1,6 @@
+{{if not .IsAppend}}
 package {{.Model}}
+{{end}}
 
 import (
 	{{range .Imports}}"{{.}}"{{end}}
