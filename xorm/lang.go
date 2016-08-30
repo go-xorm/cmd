@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/go-xorm/core"
 	"io/ioutil"
 	"strings"
 	"text/template"
+
+	"github.com/go-xorm/core"
 )
 
 type LangTmpl struct {
@@ -16,8 +17,9 @@ type LangTmpl struct {
 var (
 	mapper    = &core.SnakeMapper{}
 	langTmpls = map[string]LangTmpl{
-		"go":  GoLangTmpl,
-		"c++": CPlusTmpl,
+		"go":   GoLangTmpl,
+		"c++":  CPlusTmpl,
+		"objc": ObjcTmpl,
 	}
 )
 
