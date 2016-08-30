@@ -1,11 +1,3 @@
-//
-//  LoginAccountInfo.m
-//  CarBabyBusiness
-//
-//  Created by 冶远杰 on 16/7/20.
-//  Copyright © 2016年 冶远杰. All rights reserved.
-//
-
 {{range .Tables}}
 #import "{{UnTitle (Mapper .Name)}}.h"
 #import "../NSDictionary+json.h"

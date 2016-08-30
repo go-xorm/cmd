@@ -1,11 +1,3 @@
-//
-//  LoginAccountInfo.h
-//  CarBabyBusiness
-//
-//  Created by 冶远杰 on 16/7/20.
-//  Copyright © 2016年 冶远杰. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 
 {{range .Tables}}@interface {{Mapper .Name}} : NSObject
