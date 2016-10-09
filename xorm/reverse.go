@@ -7,6 +7,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"regexp"
 	"strconv"
 	"strings"
 	"text/template"
@@ -21,7 +22,7 @@ import (
 )
 
 var CmdReverse = &Command{
-	UsageLine: "reverse [-s] driverName datasourceName tmplPath [generatedPath]",
+	UsageLine: "reverse [-s] driverName datasourceName tmplPath [generatedPath] [tableFilterReg]",
 	Short:     "reverse a db to codes",
 	Long: `
 according database's tables and columns to generate codes for Go, C++ and etc.
@@ -29,9 +30,10 @@ according database's tables and columns to generate codes for Go, C++ and etc.
     -s                Generated one go file for every table
     driverName        Database driver name, now supported four: mysql mymysql sqlite3 postgres
     datasourceName    Database connection uri, for detail infomation please visit driver's project page
-    tmplPath        Template dir for generated. the default templates dir has provide 1 template
-    generatedPath    This parameter is optional, if blank, the default value is model, then will
-                    generated all codes in model dir
+    tmplPath          Template dir for generated. the default templates dir has provide 1 template
+    generatedPath     This parameter is optional, if blank, the default value is model, then will
+                      generated all codes in model dir
+    tableFilterReg    Table name filter regexp
 `,
 }
 
@@ -93,7 +95,8 @@ func runReverse(cmd *Command, args []string) {
 
 	var genDir string
 	var model string
-	if len(args) == 4 {
+	var filterPat *regexp.Regexp
+	if len(args) >= 4 {
 		genDir, err = filepath.Abs(args[3])
 		if err != nil {
 			fmt.Println(err)
@@ -103,6 +106,14 @@ func runReverse(cmd *Command, args []string) {
 		//[SWH|+] 经测试，path.Base不能解析windows下的“\”，需要替换为“/”
 		genDir = strings.Replace(genDir, "\\", "/", -1)
 		model = path.Base(genDir)
+
+		if len(args) >= 5 {
+			filterPat, err = regexp.Compile(args[4])
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+		}
 	} else {
 		model = "model"
 		genDir = path.Join(curPath, model)
@@ -159,6 +170,16 @@ func runReverse(cmd *Command, args []string) {
 	if err != nil {
 		log.Errorf("%v", err)
 		return
+	}
+	if filterPat != nil && len(tables) > 0 {
+		size := 0
+		for _, t := range tables {
+			if filterPat.MatchString(t.Name) {
+				tables[size] = t
+				size++
+			}
+		}
+		tables = tables[:size]
 	}
 
 	filepath.Walk(dir, func(f string, info os.FileInfo, err error) error {
