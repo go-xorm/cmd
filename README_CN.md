@@ -5,16 +5,6 @@
 
 xorm 是一组数据库操作命令行工具。 
 
-## 二进制安装
-
-如果你安装了 [got](https://github.com/gobuild/got)，你可以输入如下命令安装：
-
-```
-got go-xorm/cmd/xorm
-```
-
-或者你可以从 [gobuild](http://gobuild.io/download/github.com/lunny/got) 下载后解压到可执行路径。
-
 ## 源码安装
 
 `go get github.com/go-xorm/cmd/xorm`
@@ -30,6 +20,8 @@ got go-xorm/cmd/xorm
 * Postgres: [github.com/lib/pq](https://github.com/lib/pq)
 
 * SQLite: [github.com/mattn/go-sqlite3](https://github.com/mattn/go-sqlite3) 
+
+* MSSQL: [github.com/denisenkom/go-mssqldb](https://github.com/denisenkom/go-mssqldb)
 
 ** 对于sqlite3的支持，你需要自己进行编译 `go build -tags sqlite3` 因为sqlite3需要cgo的支持。
 

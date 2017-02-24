@@ -1,3 +1,7 @@
+// Copyright 2017 The Xorm Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package main
 
 import (
@@ -249,7 +253,7 @@ func tag(table *core.Table, col *core.Column) string {
 		for v, _ := range col.EnumOptions {
 			opts += fmt.Sprintf(",'%v'", v)
 		}
-		nstr += strings.TrimLeft(opts,",")
+		nstr += strings.TrimLeft(opts, ",")
 		nstr += ")"
 	} else if len(col.SetOptions) > 0 { //enum
 		nstr += "("
@@ -257,7 +261,7 @@ func tag(table *core.Table, col *core.Column) string {
 		for v, _ := range col.SetOptions {
 			opts += fmt.Sprintf(",'%v'", v)
 		}
-		nstr += strings.TrimLeft(opts,",")
+		nstr += strings.TrimLeft(opts, ",")
 		nstr += ")"
 	}
 	res = append(res, nstr)

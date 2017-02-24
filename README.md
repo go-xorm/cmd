@@ -5,16 +5,6 @@
 
 xorm tools is a set of  tools for database operation. 
 
-## Binary Install
-
-If you have [got](https://github.com/gobuild/got) installed, you can install by got
-
-```
-got go-xorm/cmd/xorm
-```
-
-or you can download from [gobuild](http://gobuild.io/download/github.com/lunny/got).
-
 ## Source Install
 
 `go get github.com/go-xorm/cmd/xorm`
@@ -30,6 +20,8 @@ and you should install the depends below:
 * Postgres: [github.com/lib/pq](https://github.com/lib/pq)
 
 * SQLite: [github.com/mattn/go-sqlite3](https://github.com/mattn/go-sqlite3) 
+
+* MSSQL: [github.com/denisenkom/go-mssqldb](https://github.com/denisenkom/go-mssqldb)
 
 ** For sqlite support, you need build via `go build -tags sqlite3` because of this driver ask cgo.
 

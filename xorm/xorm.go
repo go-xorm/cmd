@@ -1,3 +1,9 @@
+// Copyright 2017 The Xorm Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+// +build go1.1
+
 package main
 
 import (
@@ -12,8 +18,6 @@ import (
 	"unicode/utf8"
 )
 
-// +build go1.1
-
 // Test that go1.1 tag above is included in builds. main.go refers to this definition.
 const go11tag = true
 
@@ -23,6 +27,7 @@ var supportedDrivers = map[string]string{
 	"mysql":    "github.com/go-sql-driver/mysql",
 	"mymysql":  "github.com/ziutek/mymysql/godrv",
 	"postgres": "github.com/lib/pq",
+	"mssql":    "github.com/denisenkom/go-mssqldb",
 }
 
 // Commands lists the available commands and help topics.
