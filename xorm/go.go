@@ -201,24 +201,20 @@ func tag(table *core.Table, col *core.Column) string {
 	isNameId := (mapper.Table2Obj(col.Name) == "Id")
 	isIdPk := isNameId && typestring(col) == "int64"
 
-	res := make([]string, 0)
+	var res []string
 	if !col.Nullable {
 		if !isIdPk {
 			res = append(res, "not null")
 		}
 	}
 	if col.IsPrimaryKey {
-		if !isIdPk {
-			res = append(res, "pk")
-		}
+		res = append(res, "pk")
 	}
 	if col.Default != "" {
 		res = append(res, "default "+col.Default)
 	}
 	if col.IsAutoIncrement {
-		if !isIdPk {
-			res = append(res, "autoincr")
-		}
+		res = append(res, "autoincr")
 	}
 	if col.IsCreated {
 		res = append(res, "created")
@@ -226,7 +222,7 @@ func tag(table *core.Table, col *core.Column) string {
 	if col.IsUpdated {
 		res = append(res, "updated")
 	}
-	for name, _ := range col.Indexes {
+	for name := range col.Indexes {
 		index := table.Indexes[name]
 		var uistr string
 		if index.Type == core.UniqueType {
