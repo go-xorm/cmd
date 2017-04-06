@@ -1,11 +1,10 @@
 dependencies:
   override:
     # './...' is a relative pattern which means all subdirectories
-    - cd xorm
-    - go get -t -d -v ./...
-    - go build -v
+    - cd xorm && go get -t -d -v ./...
+    - cd xorm && go build -v
 
 test:
   override:
     # './...' is a relative pattern which means all subdirectories
-    - go test -v -race
+    - cd xorm && go test -v -race
