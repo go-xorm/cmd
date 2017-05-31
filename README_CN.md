@@ -65,7 +65,7 @@ will generated go files in `./model` directory
 
 Now, xorm tool supports go and c++ two languages and have go, goxorm, c++ three of default templates. In template directory, we can put a config file to control how to generating.
 
-````
+```
 lang=go
 genJson=1
 ```
