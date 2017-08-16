@@ -35,15 +35,17 @@ xorm 是一组数据库操作命令行工具。
 * **source**      从标注输入中执行SQL文件
 * **driver**      列出所有支持的数据库驱动
 
-## reverse
+## 反转
 
-Reverse command is a tool to convert your database struct to all kinds languages of structs or classes. After you installed the tool, you can type 
+Reverse 命令让你根据数据库的表来生成结构体或者类代码文件。安装好工具之后，可以通过
 
 `xorm help reverse`
 
-to get help
+获得帮助。
 
-example:
+例子:
+
+首先要进入到当前项目的目录下，主要是后面的命令最后一个参数中用到的模版存放在当前项目的目录下
 
 `cd $GOPATH/github.com/go-xorm/cmd/xorm`
 
@@ -59,19 +61,19 @@ mymysql:
 postgres:
 `xorm reverse postgres "dbname=xorm_test sslmode=disable" templates/goxorm`
 
-will generated go files in `./model` directory
+之后将会生成代码 generated go files in `./model` directory
 
-### Template and Config
+### 模版和配置
 
-Now, xorm tool supports go and c++ two languages and have go, goxorm, c++ three of default templates. In template directory, we can put a config file to control how to generating.
+当前，默认支持Go，C++ 和 objc 代码的生成。具体可以查看源码下的 templates 目录。在每个模版目录中，需要放置一个配置文件来控制代码的生成。如下：
 
 ```
 lang=go
 genJson=1
 ```
 
-lang must be go or c++ now.
-genJson can be 1 or 0, if 1 then the struct will have json tag.
+`lang` 目前支持 go， c++ 和 objc。
+`genJson` 可以为0或者1，如果是1则结构会包含json的tag，此项配置目前仅支持Go语言。
 
 ## Shell
 
