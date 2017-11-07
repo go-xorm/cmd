@@ -261,6 +261,8 @@ func tag(table *core.Table, col *core.Column) string {
 		nstr += ")"
 	}
 	res = append(res, nstr)
+	//将原列名称append到生成的xorm字符串后面
+	res = append(res, "'"+col.Name+"'")
 
 	var tags []string
 	if genJson {
