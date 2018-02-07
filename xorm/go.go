@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"go/format"
 	"reflect"
+	"sort"
 	"strings"
 	"text/template"
 
@@ -222,7 +223,14 @@ func tag(table *core.Table, col *core.Column) string {
 	if col.IsUpdated {
 		res = append(res, "updated")
 	}
+
+	names := make([]string, 0, len(col.Indexes))
 	for name := range col.Indexes {
+		names = append(names, name)
+	}
+	sort.Strings(names)
+
+	for _, name := range names {
 		index := table.Indexes[name]
 		var uistr string
 		if index.Type == core.UniqueType {
@@ -246,7 +254,14 @@ func tag(table *core.Table, col *core.Column) string {
 	} else if len(col.EnumOptions) > 0 { //enum
 		nstr += "("
 		opts := ""
-		for v, _ := range col.EnumOptions {
+
+		enumOptions := make([]string, 0, len(col.EnumOptions))
+		for enumOption := range col.EnumOptions {
+			enumOptions = append(enumOptions, enumOption)
+		}
+		sort.Strings(enumOptions)
+
+		for _, v := range enumOptions {
 			opts += fmt.Sprintf(",'%v'", v)
 		}
 		nstr += strings.TrimLeft(opts, ",")
@@ -254,7 +269,14 @@ func tag(table *core.Table, col *core.Column) string {
 	} else if len(col.SetOptions) > 0 { //enum
 		nstr += "("
 		opts := ""
-		for v, _ := range col.SetOptions {
+
+		setOptions := make([]string, 0, len(col.SetOptions))
+		for setOption := range col.SetOptions {
+			setOptions = append(setOptions, setOption)
+		}
+		sort.Strings(setOptions)
+
+		for _, v := range setOptions {
 			opts += fmt.Sprintf(",'%v'", v)
 		}
 		nstr += strings.TrimLeft(opts, ",")
