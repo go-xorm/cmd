@@ -45,7 +45,7 @@ to get help
 
 example:
 
-`cd $GOPATH/github.com/go-xorm/cmd/xorm`
+`cd $GOPATH/src/github.com/go-xorm/cmd/xorm`
 
 sqlite:
 `xorm reverse sqite3 test.db templates/goxorm`
