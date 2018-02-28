@@ -3,7 +3,7 @@
 
 # xorm tools
 
-xorm tools is a set of  tools for database operation.
+xorm tools is a set of  tools for database operation. 
 
 ## Source Install
 
@@ -19,7 +19,7 @@ and you should install the depends below:
 
 * Postgres: [github.com/lib/pq](https://github.com/lib/pq)
 
-* SQLite: [github.com/mattn/go-sqlite3](https://github.com/mattn/go-sqlite3)
+* SQLite: [github.com/mattn/go-sqlite3](https://github.com/mattn/go-sqlite3) 
 
 * MSSQL: [github.com/denisenkom/go-mssqldb](https://github.com/denisenkom/go-mssqldb)
 
@@ -37,7 +37,7 @@ All the commands below.
 
 ## Reverse
 
-Reverse command is a tool to convert your database struct to all kinds languages of structs or classes. After you installed the tool, you can type
+Reverse command is a tool to convert your database struct to all kinds languages of structs or classes. After you installed the tool, you can type 
 
 `xorm help reverse`
 
@@ -45,7 +45,7 @@ to get help
 
 example:
 
-`cd $GOPATH/src/github.com/go-xorm/cmd/xorm`
+`cd $GOPATH/github.com/go-xorm/cmd/xorm`
 
 sqlite:
 `xorm reverse sqite3 test.db templates/goxorm`
