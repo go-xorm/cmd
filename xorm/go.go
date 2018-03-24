@@ -17,7 +17,8 @@ import (
 )
 
 var (
-	GoLangTmpl LangTmpl = LangTmpl{
+	supportComment bool
+	GoLangTmpl     LangTmpl = LangTmpl{
 		template.FuncMap{"Mapper": mapper.Table2Obj,
 			"Type":    typestring,
 			"Tag":     tag,
@@ -222,6 +223,9 @@ func tag(table *core.Table, col *core.Column) string {
 	}
 	if col.IsUpdated {
 		res = append(res, "updated")
+	}
+	if supportComment && col.Comment != "" {
+		res = append(res, fmt.Sprintf("comment('%s')", col.Comment))
 	}
 
 	names := make([]string, 0, len(col.Indexes))

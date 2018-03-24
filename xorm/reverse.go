@@ -36,8 +36,8 @@ according database's tables and columns to generate codes for Go, C++ and etc.
     driverName        Database driver name, now supported four: mysql mymysql sqlite3 postgres
     datasourceName    Database connection uri, for detail infomation please visit driver's project page
     tmplPath          Template dir for generated. the default templates dir has provide 1 template
-    generatedPath     This parameter is optional, if blank, the default value is model, then will
-                      generated all codes in model dir
+    generatedPath     This parameter is optional, if blank, the default value is models, then will
+                      generated all codes in models dir
     tableFilterReg    Table name filter regexp
 `,
 }
@@ -60,7 +60,7 @@ func printReversePrompt(flag string) {
 type Tmpl struct {
 	Tables  []*core.Table
 	Imports map[string]string
-	Model   string
+	Models  string
 }
 
 func dirExists(dir string) bool {
@@ -120,7 +120,7 @@ func runReverse(cmd *Command, args []string) {
 			}
 		}
 	} else {
-		model = "model"
+		model = "models"
 		genDir = path.Join(curPath, model)
 	}
 
@@ -164,6 +164,8 @@ func runReverse(cmd *Command, args []string) {
 	}
 
 	os.MkdirAll(genDir, os.ModePerm)
+
+	supportComment = (args[0] == "mysql" || args[0] == "mymysql")
 
 	Orm, err := xorm.NewEngine(args[0], args[1])
 	if err != nil {
@@ -236,7 +238,7 @@ func runReverse(cmd *Command, args []string) {
 
 			newbytes := bytes.NewBufferString("")
 
-			t := &Tmpl{Tables: tbls, Imports: imports, Model: model}
+			t := &Tmpl{Tables: tbls, Imports: imports, Models: model}
 			err = tmpl.Execute(newbytes, t)
 			if err != nil {
 				log.Errorf("%v", err)
@@ -271,15 +273,16 @@ func runReverse(cmd *Command, args []string) {
 				tbs := []*core.Table{table}
 				imports := langTmpl.GenImports(tbs)
 
-				w, err := os.Create(path.Join(genDir, unTitle(mapper.Table2Obj(table.Name))+ext))
+				w, err := os.Create(path.Join(genDir, table.Name+ext))
 				if err != nil {
 					log.Errorf("%v", err)
 					return err
 				}
+				defer w.Close()
 
 				newbytes := bytes.NewBufferString("")
 
-				t := &Tmpl{Tables: tbs, Imports: imports, Model: model}
+				t := &Tmpl{Tables: tbs, Imports: imports, Models: model}
 				err = tmpl.Execute(newbytes, t)
 				if err != nil {
 					log.Errorf("%v", err)

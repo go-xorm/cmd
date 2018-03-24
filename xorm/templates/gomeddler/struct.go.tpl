@@ -1,4 +1,4 @@
-package {{.Model}}
+package {{.Models}}
 
 {{$ilen := len .Imports}}
 {{if gt $ilen 0}}
