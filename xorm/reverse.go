@@ -27,12 +27,13 @@ import (
 )
 
 var CmdReverse = &Command{
-	UsageLine: "reverse [-s] driverName datasourceName tmplPath [generatedPath] [tableFilterReg]",
+	UsageLine: "reverse [-s -c] driverName datasourceName tmplPath [generatedPath] [tableFilterReg]",
 	Short:     "reverse a db to codes",
 	Long: `
 according database's tables and columns to generate codes for Go, C++ and etc.
 
     -s                Generated one go file for every table
+    -c                Generate go file with columns' comment
     driverName        Database driver name, now supported four: mysql mymysql sqlite3 postgres
     datasourceName    Database connection uri, for detail infomation please visit driver's project page
     tmplPath          Template dir for generated. the default templates dir has provide 1 template
@@ -47,6 +48,7 @@ func init() {
 	CmdReverse.Flags = map[string]bool{
 		"-s": false,
 		"-l": false,
+		"-c": false,
 	}
 }
 
@@ -165,7 +167,7 @@ func runReverse(cmd *Command, args []string) {
 
 	os.MkdirAll(genDir, os.ModePerm)
 
-	supportComment = (args[0] == "mysql" || args[0] == "mymysql")
+	supportComment = cmd.Flags["-c"] && (args[0] == "mysql" || args[0] == "mymysql")
 
 	Orm, err := xorm.NewEngine(args[0], args[1])
 	if err != nil {
