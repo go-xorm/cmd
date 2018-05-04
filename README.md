@@ -59,6 +59,9 @@ mymysql:
 postgres:
 `xorm reverse postgres "dbname=xorm_test sslmode=disable" templates/goxorm`
 
+mssql:
+`xorm reverse mssql "server=test;user id=testid;password=testpwd;database=testdb" templates/goxorm`
+
 will generated go files in `./model` directory
 
 ### Template and Config
