@@ -6,7 +6,7 @@ require (
 	github.com/denisenkom/go-mssqldb v0.0.0-20180707235734-242fa5aa1b45
 	github.com/go-sql-driver/mysql v0.0.0-20180719071942-99ff426eb706
 	github.com/go-xorm/builder v0.0.0-20180826070321-377feedb49e3 // indirect
-	github.com/go-xorm/core v0.0.0-20180809143334-b8d39bd0ff10
+	github.com/go-xorm/core v0.6.1-0.20181008132326-6bc9412b1c4d
 	github.com/go-xorm/sqlfiddle v0.0.0-20180821085327-62ce714f951a // indirect
 	github.com/go-xorm/xorm v0.0.0-20180925133144-7a9249de3324
 	github.com/jackc/fake v0.0.0-20150926172116-812a484cc733 // indirect

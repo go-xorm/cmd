@@ -5,7 +5,7 @@ github.com/denisenkom/go-mssqldb/internal/cp
 github.com/go-sql-driver/mysql
 # github.com/go-xorm/builder v0.0.0-20180826070321-377feedb49e3
 github.com/go-xorm/builder
-# github.com/go-xorm/core v0.0.0-20180809143334-b8d39bd0ff10
+# github.com/go-xorm/core v0.6.1-0.20181008132326-6bc9412b1c4d
 github.com/go-xorm/core
 # github.com/go-xorm/xorm v0.0.0-20180925133144-7a9249de3324
 github.com/go-xorm/xorm

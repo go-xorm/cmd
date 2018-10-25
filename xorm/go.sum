@@ -10,8 +10,8 @@ github.com/go-xorm/builder v0.0.0-20180322150003-a9b7ffcca3f0/go.mod h1:v8mE3MFB
 github.com/go-xorm/builder v0.0.0-20180826070321-377feedb49e3 h1:X7269Yg+nTx6iLFxyPSbMj4ZIQHzEf0SozXjs3yy26c=
 github.com/go-xorm/builder v0.0.0-20180826070321-377feedb49e3/go.mod h1:v8mE3MFBgtL+RGFNfUnAMUqqfk/Y4W5KuwCFQIEpQLk=
 github.com/go-xorm/core v0.0.0-20180322150003-0177c08cee88/go.mod h1:d8FJ9Br8OGyQl12MCclmYBuBqqxsyeedpXciV5Myih8=
-github.com/go-xorm/core v0.0.0-20180809143334-b8d39bd0ff10 h1:STp6fSnBCD4c/i66EyurB7QuAbBf86mW+3IYyJ9sl+A=
-github.com/go-xorm/core v0.0.0-20180809143334-b8d39bd0ff10/go.mod h1:d8FJ9Br8OGyQl12MCclmYBuBqqxsyeedpXciV5Myih8=
+github.com/go-xorm/core v0.6.1-0.20181008132326-6bc9412b1c4d h1:VOfOXh9wrfBQwTB7PnD7KcnFIRwybvC0aBzQe7iKJD8=
+github.com/go-xorm/core v0.6.1-0.20181008132326-6bc9412b1c4d/go.mod h1:d8FJ9Br8OGyQl12MCclmYBuBqqxsyeedpXciV5Myih8=
 github.com/go-xorm/sqlfiddle v0.0.0-20180821085327-62ce714f951a h1:9wScpmSP5A3Bk8V3XHWUcJmYTh+ZnlHVyc+A4oZYS3Y=
 github.com/go-xorm/sqlfiddle v0.0.0-20180821085327-62ce714f951a/go.mod h1:56xuuqnHyryaerycW3BfssRdxQstACi0Epw/yC5E2xM=
 github.com/go-xorm/xorm v0.0.0-20180925133144-7a9249de3324 h1:+MR5Vd9CVEyeVf/FsXxWKSHnJN8Ac5lJlPWxZojPv0U=
