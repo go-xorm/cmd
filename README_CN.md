@@ -47,7 +47,7 @@ Reverse 命令让你根据数据库的表来生成结构体或者类代码文件
 
 首先要进入到当前项目的目录下，主要是后面的命令最后一个参数中用到的模版存放在当前项目的目录下
 
-`cd $GOPATH/github.com/go-xorm/cmd/xorm`
+`cd $GOPATH/src/github.com/go-xorm/cmd/xorm`
 
 sqlite:
 `xorm reverse sqite3 test.db templates/goxorm`
