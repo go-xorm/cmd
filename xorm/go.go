@@ -290,7 +290,11 @@ func tag(table *core.Table, col *core.Column) string {
 
 	var tags []string
 	if genJson {
-		tags = append(tags, "json:\""+col.Name+"\"")
+		if b := isIgnore(col.Name, ignoreColumnsJSON); b {
+			tags = append(tags, "json:\"-\"")
+		} else {
+			tags = append(tags, "json:\""+col.Name+"\"")
+		}
 	}
 	if len(res) > 0 {
 		tags = append(tags, "xorm:\""+strings.Join(res, " ")+"\"")
@@ -300,4 +304,13 @@ func tag(table *core.Table, col *core.Column) string {
 	} else {
 		return ""
 	}
+}
+
+func isIgnore(col string, ignoreColumnsJSON []string) bool {
+	for i := 0; i < len(ignoreColumnsJSON); i++ {
+		if ignoreColumnsJSON[i] == col {
+			return true
+		}
+	}
+	return false
 }
