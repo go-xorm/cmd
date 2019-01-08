@@ -51,7 +51,8 @@ func init() {
 }
 
 var (
-	genJson bool = false
+	genJson           bool     = false
+	ignoreColumnsJSON []string = []string{}
 )
 
 func printReversePrompt(flag string) {
@@ -155,6 +156,10 @@ func runReverse(cmd *Command, args []string) {
 		//[SWH|+]
 		if j, ok := configs["prefix"]; ok {
 			prefix = j
+		}
+
+		if j, ok := configs["ignoreColumnsJSON"]; ok {
+			ignoreColumnsJSON = strings.Split(j, ",")
 		}
 	}
 
