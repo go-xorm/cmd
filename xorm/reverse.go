@@ -51,8 +51,8 @@ func init() {
 }
 
 var (
-	genJson           bool     = false
-	ignoreColumnsJSON []string = []string{}
+	genJson                                      bool     = false
+	ignoreColumnsJSON, created, updated, deleted []string = []string{}, []string{"created_at"}, []string{"updated_at"}, []string{"deleted_at"}
 )
 
 func printReversePrompt(flag string) {
@@ -161,6 +161,19 @@ func runReverse(cmd *Command, args []string) {
 		if j, ok := configs["ignoreColumnsJSON"]; ok {
 			ignoreColumnsJSON = strings.Split(j, ",")
 		}
+
+		if j, ok := configs["created"]; ok {
+			created = strings.Split(j, ",")
+		}
+
+		if j, ok := configs["updated"]; ok {
+			updated = strings.Split(j, ",")
+		}
+
+		if j, ok := configs["deleted"]; ok {
+			deleted = strings.Split(j, ",")
+		}
+
 	}
 
 	if langTmpl, ok = langTmpls[lang]; !ok {
