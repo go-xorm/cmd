@@ -218,12 +218,19 @@ func tag(table *core.Table, col *core.Column) string {
 	if col.IsAutoIncrement {
 		res = append(res, "autoincr")
 	}
-	if col.IsCreated {
+
+	if col.SQLType.IsTime() && include(created, col.Name) {
 		res = append(res, "created")
 	}
-	if col.IsUpdated {
+
+	if col.SQLType.IsTime() && include(updated, col.Name) {
 		res = append(res, "updated")
 	}
+
+	if col.SQLType.IsTime() && include(deleted, col.Name) {
+		res = append(res, "deleted")
+	}
+
 	if supportComment && col.Comment != "" {
 		res = append(res, fmt.Sprintf("comment('%s')", col.Comment))
 	}
@@ -290,7 +297,7 @@ func tag(table *core.Table, col *core.Column) string {
 
 	var tags []string
 	if genJson {
-		if b := isIgnore(col.Name, ignoreColumnsJSON); b {
+		if include(ignoreColumnsJSON, col.Name) {
 			tags = append(tags, "json:\"-\"")
 		} else {
 			tags = append(tags, "json:\""+col.Name+"\"")
@@ -306,9 +313,9 @@ func tag(table *core.Table, col *core.Column) string {
 	}
 }
 
-func isIgnore(col string, ignoreColumnsJSON []string) bool {
-	for i := 0; i < len(ignoreColumnsJSON); i++ {
-		if ignoreColumnsJSON[i] == col {
+func include(source []string, target string) bool {
+	for _, s := range source {
+		if s == target {
 			return true
 		}
 	}
