@@ -1,0 +1,28 @@
+# cloud.google.com/go v0.37.0
+cloud.google.com/go/civil
+# github.com/denisenkom/go-mssqldb v0.0.0-20180707235734-242fa5aa1b45
+github.com/denisenkom/go-mssqldb
+github.com/denisenkom/go-mssqldb/internal/cp
+# github.com/go-sql-driver/mysql v0.0.0-20180719071942-99ff426eb706
+github.com/go-sql-driver/mysql
+# github.com/go-xorm/builder v0.0.0-20180826070321-377feedb49e3
+github.com/go-xorm/builder
+# github.com/go-xorm/core v0.6.1-0.20181008132326-6bc9412b1c4d
+github.com/go-xorm/core
+# github.com/go-xorm/xorm v0.0.0-20180925133144-7a9249de3324
+github.com/go-xorm/xorm
+# github.com/lib/pq v0.0.0-20180523175426-90697d60dd84
+github.com/lib/pq
+github.com/lib/pq/oid
+# github.com/lunny/log v0.0.0-20160921050905-7887c61bf0de
+github.com/lunny/log
+# github.com/mattn/go-sqlite3 v1.9.0
+github.com/mattn/go-sqlite3
+# github.com/ziutek/mymysql v0.0.0-20171217234033-ff6cc86d3d93
+github.com/ziutek/mymysql/godrv
+github.com/ziutek/mymysql/mysql
+github.com/ziutek/mymysql/native
+# golang.org/x/crypto v0.0.0-20190313024323-a1f597ede03a
+golang.org/x/crypto/md4
+# google.golang.org/appengine v1.4.0
+google.golang.org/appengine/cloudsql
