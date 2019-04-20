@@ -20,11 +20,12 @@ var (
 	supportComment bool
 	GoLangTmpl     LangTmpl = LangTmpl{
 		template.FuncMap{"Mapper": mapper.Table2Obj,
-			"Type":    typestring,
-			"Tag":     tag,
-			"UnTitle": unTitle,
-			"gt":      gt,
-			"getCol":  getCol,
+			"Type":       typestring,
+			"Tag":        tag,
+			"UnTitle":    unTitle,
+			"gt":         gt,
+			"getCol":     getCol,
+			"UpperTitle": upTitle,
 		},
 		formatGo,
 		genGoImports,
