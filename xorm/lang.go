@@ -55,3 +55,11 @@ func unTitle(src string) string {
 		return strings.ToLower(string(src[0])) + src[1:]
 	}
 }
+
+func upTitle(src string) string {
+	if src == "" {
+		return ""
+	}
+
+	return strings.ToUpper(src)
+}
