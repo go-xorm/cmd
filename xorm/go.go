@@ -301,7 +301,9 @@ func tag(table *core.Table, col *core.Column) string {
 		if include(ignoreColumnsJSON, col.Name) {
 			tags = append(tags, "json:\"-\"")
 		} else {
-			tags = append(tags, "json:\""+col.Name+"\"")
+			//json field default Initial letter lowercase and hump
+			name := firstLowerCase(camelString(col.Name))
+			tags = append(tags, "json:\""+name+"\"")
 		}
 	}
 	if len(res) > 0 {
@@ -321,4 +323,35 @@ func include(source []string, target string) bool {
 		}
 	}
 	return false
+}
+
+func firstLowerCase(s string) string {
+	arr := []byte(s)
+	if arr[0] >= 65 && arr[0] <= 90 {
+		arr[0] = arr[0] + 32
+	}
+	return string(arr)
+}
+func camelString(s string) string {
+	data := make([]byte, 0, len(s))
+	j := false
+	k := false
+	num := len(s) - 1
+	for i := 0; i <= num; i++ {
+		d := s[i]
+		if k == false && d >= 'A' && d <= 'Z' {
+			k = true
+		}
+		if d >= 'a' && d <= 'z' && (j || k == false) {
+			d = d - 32
+			j = false
+			k = true
+		}
+		if k && d == '_' && num > i && s[i+1] >= 'a' && s[i+1] <= 'z' {
+			j = true
+			continue
+		}
+		data = append(data, d)
+	}
+	return string(data[:])
 }
