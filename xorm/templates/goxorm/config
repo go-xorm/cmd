@@ -1,7 +1,8 @@
 lang=go
-genJson=0
+genJson=1
 prefix=cos_
-ignoreColumnsJSON=
+ignoreColumnsJSON=1
 created=
 updated=
 deleted=
+isGenColName = 0

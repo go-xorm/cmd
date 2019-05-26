@@ -307,7 +307,11 @@ func tag(table *core.Table, col *core.Column) string {
 		}
 	}
 	if len(res) > 0 {
-		tags = append(tags, "xorm:\""+strings.Join(res, " ")+"\"")
+		if isGenColName {
+			tags = append(tags, "xorm:\""+strings.Join(res, " ")+" '"+col.Name+"'\"")
+		} else {
+			tags = append(tags, "xorm:\""+strings.Join(res, " ")+"\"")
+		}
 	}
 	if len(tags) > 0 {
 		return "`" + strings.Join(tags, " ") + "`"
