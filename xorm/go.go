@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"go/format"
-	"os"
 	"reflect"
 	"sort"
 	"strings"
@@ -20,7 +19,7 @@ import (
 var (
 	supportComment bool
 	GoLangTmpl     LangTmpl = LangTmpl{
-		template.FuncMap{"Mapper": mapper.Table2Obj,
+		template.FuncMap{"Mapper": Custom.Table2Obj, //老代码  mapper.Table2Obj,
 			"Type":       typestring,
 			"Tag":        tag,
 			"UnTitle":    unTitle,
@@ -195,9 +194,6 @@ func typestring(col *core.Column) string {
 	st := col.SQLType
 	t := core.SQLType2Type(st)
 	//如果是大长度的整形ID，需要将映射的go类型改为uint64
-	if IsLongId(col) {
-		return "uint64"
-	}
 	s := t.String()
 	if s == "[]uint8" {
 		return "[]byte"
@@ -206,7 +202,7 @@ func typestring(col *core.Column) string {
 }
 
 func tag(table *core.Table, col *core.Column) string {
-	isNameId := (mapper.Table2Obj(col.Name) == "Id")
+	isNameId := mapper.Table2Obj(col.Name) == "ID"
 	isIdPk := isNameId && typestring(col) == "int64"
 
 	var res []string
@@ -309,11 +305,7 @@ func tag(table *core.Table, col *core.Column) string {
 			//json field default Initial letter lowercase and hump
 			name := firstLowerCase(camelString(col.Name))
 			//如果是大长度的整形ID，json字段类型就要变成字符串，防止整形js处理被截断
-			if IsLongId(col) {
-				tags = append(tags, "json:\""+name+",string\"")
-			} else {
-				tags = append(tags, "json:\""+name+"\"")
-			}
+			tags = append(tags, "json:\""+name+"\"")
 		}
 	}
 	if len(res) > 0 {
@@ -346,6 +338,8 @@ func firstLowerCase(s string) string {
 	}
 	return string(arr)
 }
+
+//蛇形转驼峰
 func camelString(s string) string {
 	data := make([]byte, 0, len(s))
 	j := false
@@ -357,29 +351,15 @@ func camelString(s string) string {
 			k = true
 		}
 		if d >= 'a' && d <= 'z' && (j || k == false) {
-			d = d - 32
+			d = d - 32 //大写
 			j = false
 			k = true
 		}
 		if k && d == '_' && num > i && s[i+1] >= 'a' && s[i+1] <= 'z' {
 			j = true
-			continue
+			continue //结果不要包含`_`
 		}
 		data = append(data, d)
 	}
 	return string(data[:])
-}
-
-//判断ID字段的类型是否是大长度的整形
-func IsLongId(col *core.Column) bool {
-	//从环境变量读取要忽略的字段信息，仍然使用原有的生成机制
-	ignoreStr := os.Getenv("ignoreField")
-	ignoreArr := strings.Split(ignoreStr, ",")
-	for _, a := range ignoreArr {
-		if col.Name == a {
-			return false
-		}
-	}
-	//如果是自己的ID属性且字段类型是BIGINT 则需要改成uint64
-	return strings.HasSuffix(col.Name, "id") || strings.HasSuffix(col.Name, "Id") || strings.HasSuffix(col.Name, "iD")
 }

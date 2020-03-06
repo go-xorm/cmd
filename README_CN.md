@@ -100,3 +100,16 @@ List all supported drivers since default build will not include sqlite3.
 
  BSD License
  [http://creativecommons.org/licenses/BSD/](http://creativecommons.org/licenses/BSD/)
+
+
+# 魔改版本
+1. 程序入口在：`cmd\xorm\xorm.go`
+2.配置解释  
+    1. ignoreColumnsJSON 对应的字段生成的json tag 是 `json:-`    举例  `ignoreColumnsJSON=field1,field2`   
+    2. `created,updated,deleted`   将对应的时间类型的字段添加xorm标识，以待在更新，删除，添加时自动更新值，举例同上  
+    3. isGenColName=1 生成数据库字段名
+3. 命令行举例
+```
+reverse mysql root:passwd@(ip:port)/datebase?charset=utf8 common\template path filename
+```
+     

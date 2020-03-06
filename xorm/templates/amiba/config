@@ -1,0 +1,8 @@
+lang=go
+genJson=1
+prefix=cos_
+ignoreColumnsJSON=
+created=
+updated=
+deleted=
+isGenColName=1
