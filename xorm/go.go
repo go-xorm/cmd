@@ -304,6 +304,7 @@ func tag(table *core.Table, col *core.Column) string {
 		} else {
 			//json field default Initial letter lowercase and hump
 			name := firstLowerCase(camelString(col.Name))
+			name = Custom.IdToID(name)
 			//如果是大长度的整形ID，json字段类型就要变成字符串，防止整形js处理被截断
 			tags = append(tags, "json:\""+name+"\"")
 		}
