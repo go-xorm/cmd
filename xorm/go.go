@@ -19,7 +19,7 @@ import (
 var (
 	supportComment bool
 	GoLangTmpl     LangTmpl = LangTmpl{
-		template.FuncMap{"Mapper": mapper.Table2Obj,
+		template.FuncMap{"Mapper": Custom.Table2Obj, //老代码  mapper.Table2Obj,
 			"Type":       typestring,
 			"Tag":        tag,
 			"UnTitle":    unTitle,
@@ -193,15 +193,22 @@ func genGoImports(tables []*core.Table) map[string]string {
 func typestring(col *core.Column) string {
 	st := col.SQLType
 	t := core.SQLType2Type(st)
+	//如果是大长度的整形ID，需要将映射的go类型改为uint64
 	s := t.String()
 	if s == "[]uint8" {
 		return "[]byte"
 	}
+	if IsNewID(col) {
+		return "uint64"
+	}
 	return s
+}
+func IsNewID(col *core.Column) bool {
+	return strings.Contains(col.Name, "id") && col.SQLType.Name == "BIGINT" && col.SQLType.DefaultLength == 20
 }
 
 func tag(table *core.Table, col *core.Column) string {
-	isNameId := (mapper.Table2Obj(col.Name) == "Id")
+	isNameId := mapper.Table2Obj(col.Name) == "ID"
 	isIdPk := isNameId && typestring(col) == "int64"
 
 	var res []string
@@ -301,11 +308,25 @@ func tag(table *core.Table, col *core.Column) string {
 		if include(ignoreColumnsJSON, col.Name) {
 			tags = append(tags, "json:\"-\"")
 		} else {
-			tags = append(tags, "json:\""+col.Name+"\"")
+			//json field default Initial letter lowercase and hump
+			name := firstLowerCase(camelString(col.Name))
+			name = Custom.IdToID(name)
+			isNewID := IsNewID(col)
+			//如果是大长度的整形ID，json字段类型就要变成字符串，防止整形js处理被截断
+			if isNewID {
+				tags = append(tags, "json:\""+name+",string\"")
+			} else {
+				tags = append(tags, "json:\""+name+"\"")
+			}
+
 		}
 	}
 	if len(res) > 0 {
-		tags = append(tags, "xorm:\""+strings.Join(res, " ")+"\"")
+		if isGenColName {
+			tags = append(tags, "xorm:\""+strings.Join(res, " ")+" '"+col.Name+"'\"")
+		} else {
+			tags = append(tags, "xorm:\""+strings.Join(res, " ")+"\"")
+		}
 	}
 	if len(tags) > 0 {
 		return "`" + strings.Join(tags, " ") + "`"
@@ -321,4 +342,37 @@ func include(source []string, target string) bool {
 		}
 	}
 	return false
+}
+
+func firstLowerCase(s string) string {
+	arr := []byte(s)
+	if arr[0] >= 65 && arr[0] <= 90 {
+		arr[0] = arr[0] + 32
+	}
+	return string(arr)
+}
+
+//蛇形转驼峰
+func camelString(s string) string {
+	data := make([]byte, 0, len(s))
+	j := false
+	k := false
+	num := len(s) - 1
+	for i := 0; i <= num; i++ {
+		d := s[i]
+		if k == false && d >= 'A' && d <= 'Z' {
+			k = true
+		}
+		if d >= 'a' && d <= 'z' && (j || k == false) {
+			d = d - 32 //大写
+			j = false
+			k = true
+		}
+		if k && d == '_' && num > i && s[i+1] >= 'a' && s[i+1] <= 'z' {
+			j = true
+			continue //结果不要包含`_`
+		}
+		data = append(data, d)
+	}
+	return string(data[:])
 }
