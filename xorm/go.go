@@ -198,7 +198,13 @@ func typestring(col *core.Column) string {
 	if s == "[]uint8" {
 		return "[]byte"
 	}
+	if IsNewID(col) {
+		return "uint64"
+	}
 	return s
+}
+func IsNewID(col *core.Column) bool {
+	return strings.Contains(col.Name, "id") && col.SQLType.Name == "BIGINT" && col.SQLType.DefaultLength == 20
 }
 
 func tag(table *core.Table, col *core.Column) string {
@@ -305,8 +311,14 @@ func tag(table *core.Table, col *core.Column) string {
 			//json field default Initial letter lowercase and hump
 			name := firstLowerCase(camelString(col.Name))
 			name = Custom.IdToID(name)
+			isNewID := IsNewID(col)
 			//如果是大长度的整形ID，json字段类型就要变成字符串，防止整形js处理被截断
-			tags = append(tags, "json:\""+name+"\"")
+			if isNewID {
+				tags = append(tags, "json:\""+name+",string\"")
+			} else {
+				tags = append(tags, "json:\""+name+"\"")
+			}
+
 		}
 	}
 	if len(res) > 0 {
